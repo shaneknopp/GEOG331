@@ -1,6 +1,9 @@
 # GEOG 331 Activity 2 practice script
 # SK 01/31/22
 
+# set working directory to my noaa data folder
+setwd("Z:/GEOG331_S22/students/sknopp/data/noaa_weather/")
+
 # make a vector of tree heights
 heights <- c(30, 41, 20, 22)
 
@@ -11,4 +14,6 @@ heights_cm <- heights*100
 #first argument is the vector of numbers to fill in the matrix
 Mat<-matrix(c(1,2,3,4,5,6), ncol=2, byrow=TRUE)
 
-datw <- read.csv("Z:\\GEOG331_S22\data\noaa_weather\2011124.csv")
+# read weather data
+datW <- read.csv("2011124.csv")
+

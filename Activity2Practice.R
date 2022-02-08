@@ -17,3 +17,4 @@ Mat<-matrix(c(1,2,3,4,5,6), ncol=2, byrow=TRUE)
 # read weather data
 datW <- read.csv("2011124.csv")
 
+#test commit

@@ -4,13 +4,13 @@
 OS <- .Platform$OS.type
 
 if (OS == "unix"){
-  temp_path <- "/Volumes/class/GEOG331_S22/students/sknopp/data/noaa_weather/" # MAC file path
+  path <- "/Volumes/class/GEOG331_S22/students/sknopp/data/noaa_weather/" # MAC file path
 } else if (OS == "windows"){
-  temp_path <- "Z:/GEOG331_S22/students/sknopp/data/noaa_weather" # windows file path
+  path <- "Z:/GEOG331_S22/students/sknopp/data/noaa_weather" # windows file path
 } else {
   print("ERROR: OS could not be identified")
 }
-setwd(temp_path)
+setwd(path)
 
 datW <- read.csv("2011124.csv")
 
@@ -110,14 +110,18 @@ abline(v = mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE) + sd(datW$TAVE[datW$siteN
 #   Question 4   #
 ##################
 par(mfrow=c(2, 2))
+colors <- c("midnightblue", "darkgoldenrod1", "mediumaquamarine", "coral3")
 for(x in 2:5) {
-  hex <- paste(sample(c(0:9, LETTERS[1:6]), 6, T), collapse='')
+  # random hex color generator
+  # hex <- paste(sample(c(0:9, LETTERS[1:6]), 6, T), collapse='')
   hist(datW$TAVE[datW$siteN == x],
        freq=FALSE,
        main = paste(levels(datW$NAME)[x]),
        xlab = "Average daily temperature (degrees C)",
        ylab="Relative frequency",
-       col=paste("#",hex,sep=""),
+       # concatenate the hex color with pound sign (not used for visual appeal)
+       # col=paste("#",hex,sep=""),
+       col=colors[x-1],
        border="white")
   abline(v = mean(datW$TAVE[datW$siteN == x],na.rm=TRUE),
          col = "tomato3",
@@ -134,8 +138,9 @@ for(x in 2:5) {
 
 
 ##################
-#    Example     #
+#   Question 5   #
 ##################
+par(mfrow=c(1, 1))
 # make a histogram for the first site in our levels
 # main= is the title name argument.
 # Here you want to paste the actual name of the factor not the numeric index
@@ -169,57 +174,28 @@ points(x.plot,
 
 
 ##################
-#   Question 5   #
+#    Example     #
 ##################
-par(mfrow=c(2, 2))
-for(x in 2:5) {
-  hex <- paste(sample(c(0:9, LETTERS[1:6]), 6, T), collapse='')
-  h1 <- hist(datW$TAVE[datW$siteN == x],
-             freq=FALSE, 
-             main = paste(levels(datW$NAME)[x]),
-             xlab = "Average daily temperature (degrees C)", 
-             ylab="Relative frequency",
-             col=paste("#",hex,sep=""),
-             border="white")
-  x.plot <- seq(-10,30, length.out = 100)
-  y.plot <-  dnorm(seq(-10,30, length.out = 100),
-                   mean(datW$TAVE[datW$siteN == x],na.rm=TRUE),
-                   sd(datW$TAVE[datW$siteN == x],na.rm=TRUE))
-  y.scaled <- (max(h1$density)/max(y.plot)) * y.plot
-  points(x.plot,
-         y.scaled, 
-         type = "l", 
-         col = "royalblue3",
-         lwd = 4, 
-         lty = 2)
-}
-
-
 help(dnorm)
-
-#pnorm(value to evaluate at (note this will evaluate for all values and below),mean, standard deviation)
+# pnorm(value to evaluate at (note this will evaluate for all values and below),mean, standard deviation)
 pnorm(0,
       mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
-
-#pnrom with 5 gives me all probability (area of the curve) below 5 
+# pnrom with 5 gives me all probability (area of the curve) below 5 
 pnorm(5,
       mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
-
-#pnrom with 5 gives me all probability (area of the curve) below 5 
+# pnrom with 5 gives me all probability (area of the curve) below 5 
 pnorm(5,
       mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))- pnorm(0,
                                                         mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
                                                         sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
-
-#pnorm of 20 gives me all probability (area of the curve) below 20 
-#subtracting from one leaves me with the area above 20
+# pnorm of 20 gives me all probability (area of the curve) below 20 
+# subtracting from one leaves me with the area above 20
 1 - pnorm(20,
           mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE),
           sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
-
 #pnorm of 20 gives me all probability (area of the curve) below 20 
 #subtracting from one leaves me with the area above 20
 qnorm(0.95,
@@ -227,4 +203,46 @@ qnorm(0.95,
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
 
 
+##################
+#   Question 6   #
+##################
+# Increase of 4C
+1 - pnorm(20,
+          mean((datW$TAVE[datW$siteN == 1] + 4.0),na.rm=TRUE),
+          sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
+qnorm(0.95,
+      mean((datW$TAVE[datW$siteN == 1] + 4.0),na.rm=TRUE),
+      sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
+
+
+##################
+#   Question 7   #
+##################
+hist(datW$PRCP[datW$siteN == 1],
+     freq = FALSE,
+     main = paste(levels(datW$NAME)[1]),
+     xlab = "Precipitation (mm)", 
+     ylab="Relative frequency",
+     col="grey50",
+     border="white")
+
+
+##################
+#   Question 8   #
+##################
+annualPrecip <- aggregate(datW$PRCP, by = list(datW$year, datW$siteN), FUN="sum" , na.rm=TRUE)
+colnames(annualPrecip)<-c("Year", "Site", "Precip")
+hist(annualPrecip$Precip[annualPrecip$Site == 1],
+     freq = FALSE,
+     main = paste(levels(datW$NAME)[1]),
+     xlab = "Annual Precipitation (mm)", 
+     ylab="Relative frequency",
+     col="grey50",
+     border="white")
+
+
+##################
+#   Question 9   #
+##################
+aggregate(annualPrecip$Precip, by=list(annualPrecip$Site), FUN="mean",na.rm=TRUE)
 

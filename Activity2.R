@@ -21,6 +21,9 @@ nrow(datW)
 ncol(datW)
 
 
+##################
+#    Example     #
+##################
 # specify a column with a proper date format
 # note the format here dataframe$column
 datW$dateF <- as.Date(datW$DATE, "%Y-%m-%d")
@@ -33,9 +36,13 @@ datW$year <- as.numeric(format(datW$dateF,"%Y"))
 #   Question 2   #
 ##################
 charvec <- c("One", "Two", "Three", "Four", "Five")
+charvec
 numvec <- c(1.5, 2.5, 3.5, 4.5, 5.5)
+numvec
 intvec <- c(1L, 2L, 3L, 4L, 5L)
+intvec
 facvec <- as.factor(c("a","b", "c", "d", "e"))
+facvec
 
 
 ##################
@@ -110,17 +117,14 @@ abline(v = mean(datW$TAVE[datW$siteN == 1],na.rm=TRUE) + sd(datW$TAVE[datW$siteN
 #   Question 4   #
 ##################
 par(mfrow=c(2, 2))
-colors <- c("midnightblue", "darkgoldenrod1", "mediumaquamarine", "coral3")
+colors <- c("midnightblue", "darkgoldenrod1", "mediumaquamarine", "cornflowerblue")
+# generate histograms for four locations in for loop
 for(x in 2:5) {
-  # random hex color generator
-  # hex <- paste(sample(c(0:9, LETTERS[1:6]), 6, T), collapse='')
   hist(datW$TAVE[datW$siteN == x],
        freq=FALSE,
        main = paste(levels(datW$NAME)[x]),
        xlab = "Average daily temperature (degrees C)",
        ylab="Relative frequency",
-       # concatenate the hex color with pound sign (not used for visual appeal)
-       # col=paste("#",hex,sep=""),
        col=colors[x-1],
        border="white")
   abline(v = mean(datW$TAVE[datW$siteN == x],na.rm=TRUE),
@@ -223,21 +227,23 @@ hist(datW$PRCP[datW$siteN == 1],
      main = paste(levels(datW$NAME)[1]),
      xlab = "Precipitation (mm)", 
      ylab="Relative frequency",
-     col="grey50",
+     col="midnightblue",
      border="white")
 
 
 ##################
 #   Question 8   #
 ##################
+# yearly sum data matrix
 annualPrecip <- aggregate(datW$PRCP, by = list(datW$year, datW$siteN), FUN="sum" , na.rm=TRUE)
+# label data matrix
 colnames(annualPrecip)<-c("Year", "Site", "Precip")
-hist(annualPrecip$Precip[annualPrecip$Site == 1],
+hist(annualPrecip$Precip[annualPrecip$Site == 3],
      freq = FALSE,
-     main = paste(levels(datW$NAME)[1]),
+     main = paste(levels(datW$NAME)[3]),
      xlab = "Annual Precipitation (mm)", 
      ylab="Relative frequency",
-     col="grey50",
+     col="midnightblue",
      border="white")
 
 

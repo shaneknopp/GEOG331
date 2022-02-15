@@ -211,9 +211,6 @@ qnorm(0.95,
 #   Question 6   #
 ##################
 # Increase of 4C
-1 - pnorm(20,
-          mean((datW$TAVE[datW$siteN == 1] + 4.0),na.rm=TRUE),
-          sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
 qnorm(0.95,
       mean((datW$TAVE[datW$siteN == 1] + 4.0),na.rm=TRUE),
       sd(datW$TAVE[datW$siteN == 1],na.rm=TRUE))
@@ -250,5 +247,7 @@ hist(annualPrecip$Precip[annualPrecip$Site == 3],
 ##################
 #   Question 9   #
 ##################
-aggregate(annualPrecip$Precip, by=list(annualPrecip$Site), FUN="mean",na.rm=TRUE)
-
+tot <- aggregate(annualPrecip$Precip, by=list(annualPrecip$Site), FUN="mean",na.rm=TRUE)
+# MAP = mean annual precipitation
+colnames(tot) <- c("NAME","MAP")
+tot

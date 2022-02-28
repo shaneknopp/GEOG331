@@ -34,7 +34,7 @@ assert(length(a) == length(b), "error: unequal length")
 
 
 ##################
-#   Question 2   #
+#   Question 3   #
 ##################
 # read in the data file
 # skip the first 3 rows since there is additional column info
@@ -54,7 +54,7 @@ print(datW[1,])
 
 
 ##################
-#   Question 3   #
+#   Question 4   #
 ##################
 # use install.packages to install lubridate
 # install.packages(c("lubridate"))
@@ -123,7 +123,7 @@ datW[datW$air.tempQ1 > 33,]
 
 
 ##################
-#   Question 4   #
+#   Question 5   #
 ##################
 #plot precipitation and lightning strikes on the same plot
 #normalize lighting strikes to match precipitation
@@ -143,19 +143,13 @@ points(datW$DD[lightscale > 0], lightscale[lightscale > 0],
 
 
 ##################
-#   Question 5   #
+#   Question 6   #
 ##################
 #filter out storms in wind and air temperature measurements
 # filter all values with lightning that coincides with rainfall greater than 2mm or only rainfall over 5 mm.    
 #create a new air temp column
 datW$air.tempQ2 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >0, NA,
                           ifelse(datW$precipitation > 5, NA, datW$air.tempQ1))
-
-
-##################
-#   Question 6   #
-##################
-#NEED TO DO
 
 
 ##################

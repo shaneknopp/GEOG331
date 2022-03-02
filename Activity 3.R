@@ -130,7 +130,7 @@ points(datW$DD[datW$precipitation > 0], datW$precipitation[datW$precipitation > 
 points(datW$DD[lightscale > 0], lightscale[lightscale > 0],
        col= "tomato3", pch=19)
 
-# Determine if lightscale and datW were modified uniformly by comparing length
+# determine if lightscale and datW were modified uniformly by comparing length
 assert(length(c(datW$lightning.acvitivy)) == length(lightscale), "error: The parameters are not the same size")
 
 ##################
@@ -142,16 +142,14 @@ assert(length(c(datW$lightning.acvitivy)) == length(lightscale), "error: The par
 datW$air.tempQ2 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >0, NA,
                           ifelse(datW$precipitation > 5, NA, datW$air.tempQ1))
 
-# filter out potential wind speeds due to storm
-# values with lightning that coincides with rainfall greater than 2mm or only rainfall over 5 mm removed
-# create a new wind speed column
+# filter out wind speeds due to potential storms
 datW$wind.speedQ2 <- ifelse(datW$precipitation  >= 2 & datW$lightning.acvitivy >0, NA,
                             ifelse(datW$precipitation > 5, NA, datW$wind.speed))
 
 # Determine if speedQ2 and tempQ2 were modified uniformally by comparing length
 assert(length(datW$wind.speedQ2) == length(datW$air.tempQ2), "error: The parameters are not the same size")
 
-# Generate a plot for wind speed
+# Generate a plot for new wind speed
 plot(datW$DD , datW$wind.speedQ2, xlab = "Day of Year", ylab = "Wind Speed",
      type="n")
 
@@ -188,13 +186,20 @@ plots <- recordPlot()
 ##################
 #   Question 8   #
 ##################
-results <- data.frame("Total Precipitation" = round(sum(datW$precipitation, na.rm = TRUE), digits = 3))
-results$avgAirTemp <- mean(datW$air.temperature, na.rm = TRUE)
+# Create a results table containing average air temperature 
+results <- data.frame("avgAirTemp" = mean(datW$air.temperature, na.rm = TRUE))#CHECK THE ROUDNING
+# Add average wind speed to the table
 results$avgWindSpeed <- round(mean(datW$wind.speed, na.rm = TRUE), digits = 2)
+# Add average soil moisture
 results$avgSoilMoisture <- round(mean(datW$soil.moisture, na.rm = TRUE), digits =  4)
+# Add average soil temperature
 results$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits = 1)
-results$observations <- length(datW$solar.radiation)
-results$timePeriod <- max(datW$DD, na.rm = TRUE)
+# Add average total precipitation
+results$totPrecip <-round(sum(datW$precipitation, na.rm = TRUE), digits = 3)
+# Add total number of observations using using timestamps
+results$observations <- length(datW$timestamp)
+# Add the time period of measurements
+results$timePeriod <- max(datW$DD, na.rm = TRUE)#
 # display results table
 results
 

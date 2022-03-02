@@ -187,19 +187,19 @@ plots <- recordPlot()
 #   Question 8   #
 ##################
 # Create a results table containing average air temperature 
-results <- data.frame("avgAirTemp" = mean(datW$air.temperature, na.rm = TRUE))#CHECK THE ROUDNING
+results <- data.frame("avgAirTemp" = round(mean(datW$air.temperature, na.rm = TRUE), digits = 1))#resolution 0.1C
 # Add average wind speed to the table
-results$avgWindSpeed <- round(mean(datW$wind.speed, na.rm = TRUE), digits = 2)
+results$avgWindSpeed <- round(mean(datW$wind.speed, na.rm = TRUE), digits = 2) #resolution 0.01 m/s
 # Add average soil moisture
-results$avgSoilMoisture <- round(mean(datW$soil.moisture, na.rm = TRUE), digits =  4)
+results$avgSoilMoisture <- round(mean(datW$soil.moisture, na.rm = TRUE), digits =  4)#resolution 0.0008 m3/m3
 # Add average soil temperature
-results$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits = 1)
+results$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits = 1)#resolution 0.1C
 # Add average total precipitation
-results$totPrecip <-round(sum(datW$precipitation, na.rm = TRUE), digits = 3)
+results$totPrecip <-round(sum(datW$precipitation, na.rm = TRUE), digits = 3)#resolution .017mm
 # Add total number of observations using using timestamps
 results$observations <- length(datW$timestamp)
 # Add the time period of measurements
-results$timePeriod <- max(datW$DD, na.rm = TRUE)#
+results$timePeriod <- max(datW$DD, na.rm = TRUE)
 # display results table
 results
 
@@ -207,5 +207,5 @@ results
 ##################
 #   Question 9   #
 ##################
-# display plots from variable
+# display plots from variable (used earlier)
 plots

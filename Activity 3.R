@@ -167,15 +167,19 @@ lines(datW$DD[datW$wind.speedQ2 > 0], datW$wind.speedQ2[datW$wind.speedQ2 > 0],
 ##################
 par(mfrow=c(2,2))
 
+# plot soil moisture
 plot(datW$DD, datW$soil.moisture, pch=19, type="b", xlab = "Day of Year",
      ylab="Soil moisture (cm3 water per cm3 soil)")
 
+# plot soil temperature
 plot(datW$DD, datW$soil.temp, pch = 19, type="b",
      xlab = "Day of Year", ylab = "Soil temperature (degrees C)")
 
+# plot precipitation
 plot(datW$DD, datW$precipitation, pch = 19, type="b",
      xlab = "Day of Year", ylab = "Precipitation (mm)")
 
+# plot air temperature
 plot(datW$DD, datW$air.temperature, pch=19, type="b", xlab = "Day of Year",
      ylab="Air temperature (degrees C)")
 
@@ -187,15 +191,15 @@ plots <- recordPlot()
 #   Question 8   #
 ##################
 # Create a results table containing average air temperature 
-results <- data.frame("avgAirTemp" = round(mean(datW$air.temperature, na.rm = TRUE), digits = 1))#resolution 0.1C
+results <- data.frame("avgAirTemp" = round(mean(datW$air.temperature, na.rm = TRUE), digits = 1)) #resolution 0.1C
 # Add average wind speed to the table
 results$avgWindSpeed <- round(mean(datW$wind.speed, na.rm = TRUE), digits = 2) #resolution 0.01 m/s
 # Add average soil moisture
-results$avgSoilMoisture <- round(mean(datW$soil.moisture, na.rm = TRUE), digits =  4)#resolution 0.0008 m3/m3
+results$avgSoilMoisture <- round(mean(datW$soil.moisture, na.rm = TRUE), digits =  4) #resolution 0.0008 m3/m3
 # Add average soil temperature
-results$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits = 1)#resolution 0.1C
+results$avgSoilTemp <- round(mean(datW$soil.temp, na.rm = TRUE), digits = 1) #resolution 0.1C
 # Add average total precipitation
-results$totPrecip <-round(sum(datW$precipitation, na.rm = TRUE), digits = 3)#resolution .017mm
+results$totPrecip <-round(sum(datW$precipitation, na.rm = TRUE), digits = 3) #resolution .017mm
 # Add total number of observations using using timestamps
 results$observations <- length(datW$timestamp)
 # Add the time period of measurements

@@ -130,11 +130,11 @@ points(datW$DD[datW$precipitation > 0], datW$precipitation[datW$precipitation > 
 points(datW$DD[lightscale > 0], lightscale[lightscale > 0],
        col= "tomato3", pch=19)
 
-# Determine if lightscale and datW were modified uniformally by comparing length
-assert(length(c(datW$precipitation)) == length(lightscale), "error: The parameters are not the same size")
+# Determine if lightscale and datW were modified uniformly by comparing length
+assert(length(c(datW$lightning.acvitivy)) == length(lightscale), "error: The parameters are not the same size")
 
 ##################
-#   Question 6   #proof
+#   Question 6   #
 ##################
 # filter out storms in wind and air temperature measurements
 # filter all values with lightning that coincides with rainfall greater than 2mm or only rainfall over 5 mm.    

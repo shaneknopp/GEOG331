@@ -261,15 +261,11 @@ ggplot(data= datD, aes(yearPlot,discharge)) +
 datD$yearPlot <- as.factor(datD$year)
 datD$month <- month(datesD)
 
-#isloate 2016 into data frame
+#only 2016 data in frame
 year16 <- data.frame(datD$discharge[datD$year==2016], datD$month[datD$year==2016])
 colnames(year16) <- c("discharge", "month")
 
-#isloate 2017 into data frame
-year17 <- data.frame(datD$discharge[datD$year==2017], datD$month[datD$year==2017])
-colnames(year17) <- c("discharge", "month")
-
-#fully filter by season for every
+#define seasons
 #https://www.almanac.com/content/first-day-seasons
 year16$season <- ifelse(year16$month < 3, "Winter",
                         ifelse(year16$month < 6, "Spring",
@@ -277,6 +273,10 @@ year16$season <- ifelse(year16$month < 3, "Winter",
                                       ifelse(year16$month <= 11, "Fall",
                                              ifelse(year16$month <= 12, "Winter")))))
 
+#only 2017 data in frame
+year17 <- data.frame(datD$discharge[datD$year==2017], datD$month[datD$year==2017])
+colnames(year17) <- c("discharge", "month")
+#define seasons
 year17$season <- ifelse(year17$month < 3, "Winter",
                         ifelse(year17$month < 6, "Spring",
                                ifelse(year17$month < 9, "Summer",

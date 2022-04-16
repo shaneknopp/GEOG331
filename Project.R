@@ -47,10 +47,12 @@ colnames(df2020) <- c("PRECIPITATION","MEAN.TEMP","decYear")
 
 decday <- ifelse(leap_year(2020),2020 + (252/366),
                        2020 + (252/365))
-par(mfrow=c(2,2))
 #plot precipitation
-plot(df2020$decYear, df2020$PRECIPITATION, type="l", xlab="Year", ylab="Precipitation (inches)",)
-abline(v=2020.689, col="red")
+plot(df2020$decYear, df2020$PRECIPITATION, type="l", scale.frac = 0.6,main="", xlab="",ylab="",axes=TRUE)
+mtext("Decimal Day in 2020", side=1, line=3, font=2)
+mtext("Precipitation (in)", side=2, line=3, font=2)
+plot(df2020$decYear, df2020$PRECIPITATION, type="l", xlab=expression(paste("Decimal Day in 2020")), ylab=expression(paste("Precipitation (in)")),)
+points(2020.689, df2020$PRECIPITATION[252], col="red")
 
 #plot min temperature
 #plot(datM$decYear, datM$MIN.TEMP, type="l", xlab="Year", ylab="Min Temperature (fahrenheit)",)
@@ -59,8 +61,8 @@ abline(v=2020.689, col="red")
 #plot(datM$decYear, datM$MAX.TEMP, type="l", xlab="Year", ylab="Max Temperature (fahrenheit)",)
 
 #plot mean temperature
-plot(df2020$decYear, df2020$MEAN.TEMP, type="l", xlab="Year", ylab="Mean Temperature (fahrenheit)",)
-abline(v=2020.689, col="red")
+plot(df2020$decYear, df2020$MEAN.TEMP, type="l", xlab=expression(paste("Decimal Day in 2020")), ylab=expression(paste("Mean Temperature (°F)")),)
+points(2020.689, df2020$MEAN.TEMP[252], col="red")
 
 par(mfrow=c(1,1))
 p <- rast("L2020252.L3m_DAY_CYAN_CI_cyano_CYAN_CONUS_300m_7_5.tif")

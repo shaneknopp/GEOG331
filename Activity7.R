@@ -55,8 +55,6 @@ set.seed(12153)
 #randomly choose 60 elements in the vector of 120 elements
 sample(seq(1,120),60)
 
-#set seed so samples always the same
-set.seed(12153)
 #randomly select the data in each dataset to be  used
 sampleType <- rep("train",120)
 #samples to randomly convert to validation data
@@ -109,6 +107,12 @@ rf_model <- caret::train(x = trainD[,c(5:13)], #digital number data
 #check output
 rf_model
 
+# Apply the random forest model to the Sentinel-2 data
+rf_prediction <- terra::predict(rsmask, rf_model, na.rm = T)
+#view prediction
+plot(rf_prediction)
+
+
 #landcover class names
 landclass
 
@@ -117,8 +121,8 @@ landclass$cols <-c("#a6d854","#8da0cb","#66c2a5",
                    "#fc8d62","#ffffb3","#ffd92f")
 #make plot and hide legend
 plot(rf_prediction,
-     breaks=seq(0,6), 
-     col=landclass$cols ,
+     breaks=seq(1,6), 
+     col=landclass$cols,
      legend=FALSE, axes=FALSE)
 legend("bottomleft", paste(landclass$landcover),
        fill=landclass$cols ,bty="n",horiz = T) 
@@ -137,3 +141,4 @@ rf_errorM$table
 
 #look at the overall accuracy
 rf_errorM$overall
+

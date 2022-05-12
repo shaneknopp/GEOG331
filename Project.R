@@ -46,7 +46,7 @@ prepData <- function(filename) {
   # read in data from station
   dat <- read.csv(filename)
   
-  # quality control stationdat
+  # quality control station data
   dat$PRECIPITATION <- ifelse(dat$PRECIPITATION == -99.99, NA, dat$PRECIPITATION)
   dat$MAX.TEMP <- ifelse(dat$MAX.TEMP == -99.9, NA, dat$MAX.TEMP)
   dat$MIN.TEMP <- ifelse(dat$MIN.TEMP == -99.9, NA, dat$MIN.TEMP)
@@ -78,6 +78,17 @@ clip <- function(stationframe, year, lower, upper) {
 # prep data from the Melbourne Station
 datM <- prepData("85612_2010_1_1_2021.csv")
 
+# Melbourne Station statistics
+fit <- lm(datM$PRECIPITATION~datM$MEAN.TEMP)
+summary(fit)
+plot(datM$MEAN.TEMP,datM$PRECIPITATION)
+abline(fit)
+hist(summary(fit$residuals))
+shapiro.test(summary(fit)$residuals)
+qqnorm(summary(fit)$residuals, pch = 16) 
+qqline(summary(fit)$residuals, datax = FALSE, distribution = qnorm,
+       probs = c(0.25, 0.75), qtype = 7, pch = 16)
+
 ### September 9, 2020 ###
 # create a data frame just of 2020 Melbourne data for plots
 Melbourne2020 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2020], datM$MEAN.TEMP[datM$YEAR == 2020], datM$decYear[datM$YEAR == 2020])
@@ -101,6 +112,33 @@ Melbourne252 <- rast("L2020252.L3m_DAY_CYAN_CI_cyano_CYAN_CONUS_300m_7_5.tif")
 # Plot the algal bloom raster image
 plot(Melbourne252)
 
+# Crop to Melbourne
+Melbourne252cropped <- crop(Melbourne252, ext(1460000,1600000, 650000, 800000))
+
+# Reclassify vector values
+reclass_v <- c(0, 0, 0,
+               0, 253, 1,
+               254, 254, 2,
+               255, 255, 3)
+
+# Convert vector to matrix
+reclass_m <- matrix(reclass_v,
+                    ncol = 3,
+                    byrow = TRUE)
+
+# 
+Melbourne252reclassified <- classify(Melbourne252cropped, reclass_m)
+
+first_column <- c("0","1","254","255")
+second_column <- c("Inconclusive","Algal Bloom","Land","No Data")
+colors <-c("#fc8d62","#8da0cb","#a6d854", "#bcbcbc")
+df <- data.frame(first_column, second_column, colors)
+plot(Melbourne252reclassified, col = df$colors, legend = FALSE, axes = FALSE)
+legend("bottom", paste(df$second_column),
+       fill=df$colors ,bty="n",horiz = T) 
+
+terra::freq(Melbourne252reclassified)
+
 ### June 25, 2019 ###
 Melbourne2019 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2019], datM$MEAN.TEMP[datM$YEAR == 2019], datM$decYear[datM$YEAR == 2019])
 colnames(Melbourne2019) <- c("PRECIPITATION","MEAN.TEMP","decYear")
@@ -122,6 +160,17 @@ plot(Melbourne176)
 ############################
 # prep data from the Everglades Station
 datE <- prepData("82850_2000_1_1_2017.csv")
+
+# Everglades Station statistics
+fit <- lm(datE$PRECIPITATION~datE$MEAN.TEMP)
+summary(fit)
+plot(datE$MEAN.TEMP,datE$PRECIPITATION)
+abline(fit)
+hist(summary(fit$residuals))
+shapiro.test(summary(fit)$residuals)
+qqnorm(summary(fit)$residuals, pch = 16) 
+qqline(summary(fit)$residuals, datax = FALSE, distribution = qnorm,
+       probs = c(0.25, 0.75), qtype = 7, pch = 16)
 
 ### January 18, 2012 ###
 Everglades2012 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2012], datM$MEAN.TEMP[datM$YEAR == 2012], datM$decYear[datM$YEAR == 2012])
@@ -159,8 +208,23 @@ plot(Everglades189)
 ############################
 # prep data from the Canal Point Station
 datCP <- prepData("81276_2010_1_1_2021.csv")
+# extra quality control only needed for CP station
+datCP$PRECIPITATION <- ifelse(datCP$PRECIPITATION == -99.9, NA, datCP$PRECIPITATION)
+datCP$MIN.TEMP <- ifelse(datCP$MIN.TEMP == -99.99, NA, datCP$MIN.TEMP)
+datCP$MEAN.TEMP <- ifelse(datCP$MEAN.TEMP == -99.99, NA, datCP$MEAN.TEMP)
 
-#### June 2, 2019 ###
+# Okeechobee Station statistics
+fit <- lm(datCP$PRECIPITATION~datCP$MEAN.TEMP)
+summary(fit)
+plot(datCP$MEAN.TEMP,datCP$PRECIPITATION)
+abline(fit)
+hist(summary(fit$residuals))
+shapiro.test(summary(fit)$residuals)
+qqnorm(summary(fit)$residuals, pch = 16) 
+qqline(summary(fit)$residuals, datax = FALSE, distribution = qnorm,
+       probs = c(0.25, 0.75), qtype = 7, pch = 16)
+
+### June 2, 2019 ###
 CP2019 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2019], datM$MEAN.TEMP[datM$YEAR == 2019], datM$decYear[datM$YEAR == 2019])
 colnames(CP2019) <- c("PRECIPITATION","MEAN.TEMP","decYear")
 

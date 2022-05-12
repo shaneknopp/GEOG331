@@ -71,6 +71,38 @@ clip <- function(stationframe, year, lower, upper) {
   return(dat)
 }
 
+# method to reclassify and crop an algal bloom raster
+reclassify <- function(raster, ext) {
+  # Crop to ext
+  croppedraster <- crop(raster, ext)
+  
+  # Reclassify vector values
+  reclass_v <- c(0, 0, 0,
+                 0, 253, 1,
+                 254, 254, 2,
+                 255, 255, 3)
+  
+  # Convert vector to matrix
+  reclass_m <- matrix(reclass_v,
+                      ncol = 3,
+                      byrow = TRUE)
+  
+  # Reclassified algal bloom raster
+  reclassified <- classify(croppedraster, reclass_m)
+  
+  return(reclassified)
+}
+
+
+#################
+### Constants ###
+#################
+values <- c("0","1","254","255")
+names <- c("Inconclusive","Algal Bloom","Land","No Data")
+colors <-c("#fc8d62","#8da0cb","#a6d854", "#bcbcbc")
+# Data frame for the reclassified color value mapping
+reclassvalues <- data.frame(values, names, colors)
+
 
 ##########################
 ### Melbourne Analysis ###
@@ -112,31 +144,13 @@ Melbourne252 <- rast("L2020252.L3m_DAY_CYAN_CI_cyano_CYAN_CONUS_300m_7_5.tif")
 # Plot the algal bloom raster image
 plot(Melbourne252)
 
-# Crop to Melbourne
-Melbourne252cropped <- crop(Melbourne252, ext(1460000,1600000, 650000, 800000))
+# Reclassify the raster image
+Melbourne252reclassified <- reclassify(Melbourne252, ext(1460000, 1600000, 650000, 800000))
+plot(Melbourne252reclassified, col = reclassvalues$colors, legend = FALSE, axes = FALSE)
+legend("bottom", paste(reclassvalues$names),
+       fill=reclassvalues$colors, bty="n",horiz = T) 
 
-# Reclassify vector values
-reclass_v <- c(0, 0, 0,
-               0, 253, 1,
-               254, 254, 2,
-               255, 255, 3)
-
-# Convert vector to matrix
-reclass_m <- matrix(reclass_v,
-                    ncol = 3,
-                    byrow = TRUE)
-
-# 
-Melbourne252reclassified <- classify(Melbourne252cropped, reclass_m)
-
-first_column <- c("0","1","254","255")
-second_column <- c("Inconclusive","Algal Bloom","Land","No Data")
-colors <-c("#fc8d62","#8da0cb","#a6d854", "#bcbcbc")
-df <- data.frame(first_column, second_column, colors)
-plot(Melbourne252reclassified, col = df$colors, legend = FALSE, axes = FALSE)
-legend("bottom", paste(df$second_column),
-       fill=df$colors ,bty="n",horiz = T) 
-
+# Count the frequency of each pixel type from the raster
 terra::freq(Melbourne252reclassified)
 
 ### June 25, 2019 ###
@@ -154,6 +168,13 @@ points(2019.482, Melbourne2019$MEAN.TEMP[176], col="red")
 Melbourne176 <- rast("L2019176.L3m_DAY_CYAN_CI_cyano_CYAN_CONUS_300m_7_5.tif")
 plot(Melbourne176)
 
+Melbourne176reclassified <- reclassify(Melbourne176, ext(1460000, 1600000, 650000, 800000))
+plot(Melbourne176reclassified, col = reclassvalues$colors, legend = FALSE, axes = FALSE)
+legend("bottom", paste(reclassvalues$names),
+       fill=reclassvalues$colors, bty="n",horiz = T) 
+
+# Count the frequency of each pixel type from the raster
+terra::freq(Melbourne176reclassified)
 
 ############################
 ### Florida Bay Analysis ###
@@ -187,6 +208,14 @@ points(2012.049, Everglades2012$MEAN.TEMP[18], col="red")
 Everglades018 <- rast("M2012018.L3m_DAY_CYAN_CI_cyano_CYAN_CONUS_300m_7_5.tif")
 plot(Everglades018)
 
+Everglades018reclassified <- reclassify(Everglades018, ext(1500000, 1600000, 314826.3, 400000))
+plot(Everglades018reclassified, col = reclassvalues$colors, legend = FALSE, axes = FALSE)
+legend("bottom", paste(reclassvalues$names),
+       fill=reclassvalues$colors, bty="n",horiz = T) 
+
+# Count the frequency of each pixel type from the raster
+terra::freq(Everglades018reclassified)
+
 ### July 7, 2016 ###
 Everglades2016 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2016], datM$MEAN.TEMP[datM$YEAR == 2016], datM$decYear[datM$YEAR == 2016])
 colnames(Everglades2016) <- c("PRECIPITATION","MEAN.TEMP","decYear")
@@ -202,6 +231,13 @@ points(2016.516, Everglades2016$MEAN.TEMP[189], col="red")
 Everglades189 <- rast("L2016189.L3m_DAY_CYAN_CI_cyano_CYAN_CONUS_300m_7_5.tif")
 plot(Everglades189)
 
+Everglades189reclassified <- reclassify(Everglades189, ext(1500000, 1600000, 314826.3, 400000))
+plot(Everglades189reclassified, col = reclassvalues$colors, legend = FALSE, axes = FALSE)
+legend("bottom", paste(reclassvalues$names),
+       fill=reclassvalues$colors, bty="n",horiz = T) 
+
+# Count the frequency of each pixel type from the raster
+terra::freq(Everglades189reclassified)
 
 ############################
 ### Canal Point Analysis ###
@@ -239,6 +275,15 @@ points(2019.419, CP2019$MEAN.TEMP[153], col="red")
 CP153 <- rast("L2019153.L3m_DAY_CYAN_CI_cyano_CYAN_CONUS_300m_7_5.tif")
 plot(CP153)
 
+CP153reclassified <- reclassify(CP153, ext(1480000, 1600000, 500000, 600000))
+plot(CP153reclassified, col = reclassvalues$colors, legend = FALSE, axes = FALSE)
+legend("bottom", paste(reclassvalues$names),
+       fill=reclassvalues$colors, bty="n",horiz = T) 
+
+# Count the frequency of each pixel type from the raster
+terra::freq(CP153reclassified)
+
+
 ### July 22, 2011 ###
 CP2011 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2011], datM$MEAN.TEMP[datM$YEAR == 2011], datM$decYear[datM$YEAR == 2011])
 colnames(CP2011) <- c("PRECIPITATION","MEAN.TEMP","decYear")
@@ -253,3 +298,11 @@ plot(CP2011$decYear, CP2011$MEAN.TEMP, type="l", xlab=expression(paste("Decimal 
 points(2011.556, CP2011$MEAN.TEMP[203], col="red")
 CP203 <- rast("M2011203.L3m_DAY_CYAN_CI_cyano_CYAN_CONUS_300m_7_5.tif")
 plot(CP203)
+
+CP203reclassified <- reclassify(CP203, ext(1480000, 1600000, 500000, 600000))
+plot(CP203reclassified, col = reclassvalues$colors, legend = FALSE, axes = FALSE)
+legend("bottom", paste(reclassvalues$names),
+       fill=reclassvalues$colors, bty="n",horiz = T) 
+
+# Count the frequency of each pixel type from the raster
+terra::freq(CP203reclassified)

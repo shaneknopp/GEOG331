@@ -71,7 +71,7 @@ clip <- function(stationframe, year, lower, upper) {
   return(dat)
 }
 
-# method to reclassify and crop an algal bloom raster
+# l
 reclassify <- function(raster, ext) {
   # Crop to ext
   croppedraster <- crop(raster, ext)
@@ -194,10 +194,10 @@ qqline(summary(fit)$residuals, datax = FALSE, distribution = qnorm,
        probs = c(0.25, 0.75), qtype = 7, pch = 16)
 
 ### January 18, 2012 ###
-Everglades2012 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2012], datM$MEAN.TEMP[datM$YEAR == 2012], datM$decYear[datM$YEAR == 2012])
+Everglades2012 <- data.frame(datE$PRECIPITATION[datE$YEAR == 2012], datE$MEAN.TEMP[datE$YEAR == 2012], datE$decYear[datE$YEAR == 2012])
 colnames(Everglades2012) <- c("PRECIPITATION","MEAN.TEMP","decYear")
 
-Everglades018week <- clip(datM, 2012, 14, 22)
+Everglades018week <- clip(datE, 2012, 14, 22)
 Everglades018week
 
 plot(Everglades2012$decYear, Everglades2012$PRECIPITATION, type="l", xlab=expression(paste("Decimal Day in 2012")), ylab=expression(paste("Precipitation (in)")),)
@@ -217,10 +217,10 @@ legend("bottom", paste(reclassvalues$names),
 terra::freq(Everglades018reclassified)
 
 ### July 7, 2016 ###
-Everglades2016 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2016], datM$MEAN.TEMP[datM$YEAR == 2016], datM$decYear[datM$YEAR == 2016])
+Everglades2016 <- data.frame(datE$PRECIPITATION[datE$YEAR == 2016], datE$MEAN.TEMP[datE$YEAR == 2016], datE$decYear[datE$YEAR == 2016])
 colnames(Everglades2016) <- c("PRECIPITATION","MEAN.TEMP","decYear")
 
-Everglades018week <- clip(datM, 2016, 185, 193)
+Everglades018week <- clip(datE, 2016, 185, 193)
 Everglades018week
 
 plot(Everglades2016$decYear, Everglades2016$PRECIPITATION, type="l", xlab=expression(paste("Decimal Day in 2016")), ylab=expression(paste("Precipitation (in)")),)
@@ -261,10 +261,10 @@ qqline(summary(fit)$residuals, datax = FALSE, distribution = qnorm,
        probs = c(0.25, 0.75), qtype = 7, pch = 16)
 
 ### June 2, 2019 ###
-CP2019 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2019], datM$MEAN.TEMP[datM$YEAR == 2019], datM$decYear[datM$YEAR == 2019])
+CP2019 <- data.frame(datCP$PRECIPITATION[datCP$YEAR == 2019], datCP$MEAN.TEMP[datCP$YEAR == 2019], datCP$decYear[datCP$YEAR == 2019])
 colnames(CP2019) <- c("PRECIPITATION","MEAN.TEMP","decYear")
 
-CP153week <- clip(datM, 2019, 149, 157)
+CP153week <- clip(datCP, 2019, 149, 157)
 CP153week
 
 plot(CP2019$decYear, CP2019$PRECIPITATION, type="l", xlab=expression(paste("Decimal Day in 2019")), ylab=expression(paste("Precipitation (in)")),)
@@ -285,10 +285,10 @@ terra::freq(CP153reclassified)
 
 
 ### July 22, 2011 ###
-CP2011 <- data.frame(datM$PRECIPITATION[datM$YEAR == 2011], datM$MEAN.TEMP[datM$YEAR == 2011], datM$decYear[datM$YEAR == 2011])
+CP2011 <- data.frame(datCP$PRECIPITATION[datCP$YEAR == 2011], datCP$MEAN.TEMP[datCP$YEAR == 2011], datCP$decYear[datCP$YEAR == 2011])
 colnames(CP2011) <- c("PRECIPITATION","MEAN.TEMP","decYear")
 
-CP203week <- clip(datM, 2011, 199, 207)
+CP203week <- clip(datCP, 2011, 199, 207)
 CP203week
 
 plot(CP2011$decYear, CP2011$PRECIPITATION, type="l", xlab=expression(paste("Decimal Day in 2011")), ylab=expression(paste("Precipitation (in)")),)
